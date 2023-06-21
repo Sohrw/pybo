@@ -84,8 +84,10 @@
             <form action="{% url 'pybo:comment_create' answer.question.id answer.id %}" method="post" class="my-3">
                 {% csrf_token %}
                 <div class="form-group">
-                    <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content"
-                        class="form-control" rows="3"></textarea>
+                    <textarea
+                            {% if not user.is_authenticated %}disabled
+                              {% endif %} name="content" id="content"
+                        class="form-control" rows="3" required></textarea>
                 </div>
                 <input type="submit" value="댓글 등록" class="btn btn-primary">
             </form>

@@ -19,6 +19,10 @@
         {% endif %}
         <!-- 오류표시 End -->
         <div class="mb-3">
+            <label for="category" class="form-label">카테고리</label>
+            {{ form.category }}
+        </div>
+        <div class="mb-3">
             <label for="subject" class="form-label">제목</label>
             <input type="text" class="form-control" name="subject" id="subject"
                    value="{{ form.subject.value|default_if_none:'' }}">

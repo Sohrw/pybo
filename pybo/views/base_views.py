@@ -4,17 +4,21 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 
-def index(request):
+def index(request, category_id=None):
     page = request.GET.get('page', '1')
     kw = request.GET.get('kw', '')
     question_list = Question.objects.order_by('-create_date')
+
+    if category_id is not None:
+        question_list = question_list.filter(category_id=category_id)
+
     if kw:
         question_list = question_list.filter(
             Q(subject__icontains=kw) |
             Q(content__icontains=kw) |
-            Q(answer__content__icontains=kw) |
-            Q(author__username__icontains=kw) |
-            Q(answer__author__username__icontains=kw)
+            Q(question_answer__content__icontains=kw) |
+            Q(author__username__icontains=kw)|
+            Q(question_answer__author__username__icontains=kw)
         ).distinct()
     paginator = Paginator(question_list, 10)
     page_obj = paginator.get_page(page)
@@ -32,3 +36,4 @@ def detail(request, question_id):
 
     context = {'answer_list': page_obj, 'question': question}
     return render(request, 'pybo/question_detail.html', context)
+

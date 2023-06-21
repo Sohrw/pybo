@@ -10,6 +10,9 @@ urlpatterns = [
          base_views.index, name='index'),
     path('<int:question_id>/',
          base_views.detail, name='detail'),
+    path('category/<int:category_id>/',
+         base_views.index, name='category'),
+
 
     # question_views.py
     path('question/create/',
