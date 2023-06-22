@@ -17,7 +17,7 @@ def index(request, category_id=None):
             Q(subject__icontains=kw) |
             Q(content__icontains=kw) |
             Q(question_answer__content__icontains=kw) |
-            Q(author__username__icontains=kw)|
+            Q(author__username__icontains=kw) |
             Q(question_answer__author__username__icontains=kw)
         ).distinct()
     paginator = Paginator(question_list, 10)
@@ -28,12 +28,16 @@ def index(request, category_id=None):
 
 
 def detail(request, question_id):
+
     question = get_object_or_404(Question, pk=question_id)
+    if request.method == "GET":
+        question.view_count = question.view_count + 1
+        question.save()
+
     page = request.GET.get('page', '1')
-    answer_list = question.question_answer.order_by('create_date')
+    answer_list = question.question_answer.order_by('-create_date')
     paginator = Paginator(answer_list, 5)
     page_obj = paginator.get_page(page)
 
     context = {'answer_list': page_obj, 'question': question}
     return render(request, 'pybo/question_detail.html', context)
-

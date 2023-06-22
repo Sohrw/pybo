@@ -17,6 +17,7 @@ class Question(models.Model):
     create_date = models.DateTimeField()
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(User, related_name='voter_question')
+    view_count = models.IntegerField(default=0)
 
     def __str__(self):
         return self.subject
